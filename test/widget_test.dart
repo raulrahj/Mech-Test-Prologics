@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mech_test_prologics/app.dart';
 
 import 'package:mech_test_prologics/main.dart';
 
