@@ -118,9 +118,9 @@ class ScreenOne extends StatelessWidget {
                         ),
                         Expanded(
                             child: Row(
-                          children: [
-                            const Icon(Icons.done),
-                            const Icon(Icons.calendar_month)
+                          children: const [
+                            Icon(Icons.done),
+                            Icon(Icons.calendar_month)
                           ],
                         ))
                       ],
