@@ -1,13 +1,17 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:mech_test_prologics/provider/screen2_controller.dart';
 import 'package:mech_test_prologics/view/config/app_colors.dart';
 import 'package:mech_test_prologics/view/config/sizes.dart';
 import 'package:mech_test_prologics/view/config/strings.dart';
 import 'package:mech_test_prologics/view/config/styles.dart';
+import 'package:mech_test_prologics/view/screens/screen1.dart';
 import 'package:mech_test_prologics/view/widgets/d_icon_button.dart';
 import "package:mech_test_prologics/view/widgets/dotted_divider.dart";
 import 'package:mech_test_prologics/view/widgets/image_carousel.dart';
+import 'package:mech_test_prologics/view/widgets/pop_button.dart';
 import 'package:mech_test_prologics/view/widgets/star_rating.dart';
+import 'package:provider/provider.dart';
 
 class ScreenTwo extends StatelessWidget {
   const ScreenTwo({Key? key}) : super(key: key);
@@ -16,176 +20,171 @@ class ScreenTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        shrinkWrap: true,
         children: [
           Stack(
             clipBehavior: Clip.none,
             children: [
-              ImageCarousel(),
+              const ImageCarousel(),
               Positioned(
-                top: dHeight(context)/3.5,
-                left: dWidth(context)/2.3,
-                  child: Row(
-                children: indicators(3, 2),
-              )),
+                  top: dHeight(context) / 3.5,
+                  // left: dWidth(context)/2.3,
+                  child: SizedBox(
+                    width: dWidth(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: indicators(images.length, 1),
+                    ),
+                  )),
               const Positioned(
                 top: 10,
-                left: 10,
-                child: DIconButton(
-                  bg: kYellow,
-                  size: 16,
-                ),
+                left:0,
+                child: PopButton(),
               ),
               Positioned(
                 top: dHeight(context) / 3,
                 left: 12,
                 right: 12,
-                child: StackDisplay(),
+                child: const StackDisplay(),
               ),
             ],
           ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.only(
-                  top: dHeight(context) / 13, left: 20, right: 20),
-              children: [
-                PaddedContainer(
-                  contents: [
-                    const DTitleWidget(
-                      title: 'Services',
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: HorizontalDottedList(items: services),
-                        ),
-                        const StartCount(count: '3.2'),
-                      ],
-                    ),
-                  ],
-                ),
-                const DashDivider(),
-                PaddedContainer(
-                  contents: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const DTitleWidget(
-                                title: 'Category',
-                              ),
-                              HorizontalDottedList(
-                                items: category,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.phone_in_talk_sharp,
-                          color: kGreen,
-                          size: 30,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                const DashDivider(),
-                PaddedContainer(
-                  contents: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              DTitleWidget(
-                                title: 'Benefits',
-                              ),
-                              Text(
-                                'Material Pick up & Deivery Available',
-                                style: TextStyles.bodyGray,
-                              )
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.chat,
-                          color: kYellow,
-                          size: 30,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                const DashDivider(),
-                PaddedContainer(
-                  contents: [
-                    const DTitleWidget(
-                      title: 'Description',
-                    ),
-                    Text(
-                      loremIpsum,
-                      style: TextStyles.bodyGray
-                          .copyWith(height: 1.4, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                const DashDivider(),
-                PaddedContainer(
-                  contents: [
-                    const DTitleWidget(
-                      title: 'Rating & Comments',
-                    ),
-                    Row(
-                      children: const [
-                        Expanded(
-                          flex: 4,
-                          child: StarContainer(),
-                        ),
-                        Expanded(
-                            child: HighlightRating(
-                          count: 54,
-                          percentage: 4.3,
-                        ))
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          CustomButton(),
-                          Text(
-                            'Reviews(12)',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 19),
-                          )
-                        ],
-                      ),
-                    ),
-                    Column(
-                      children: const [
-                        CustomListTile(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            loremIpsum,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ],
+          ListView(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.only(
+              top: dHeight(context) / 13,
             ),
+            children: [
+              PaddedContainer(
+                contents: [
+                  const DTitleWidget(
+                    title: 'Services',
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: HorizontalDottedList(items: services),
+                      ),
+                      const StartCount(count: '3.2'),
+                    ],
+                  ),
+                ],
+              ),
+              const DashDivider(),
+              PaddedContainer(
+                contents: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const DTitleWidget(
+                              title: 'Category',
+                            ),
+                            HorizontalDottedList(
+                              items: category,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.phone_in_talk_sharp,
+                        color: kGreen,
+                        size: 30,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const DashDivider(),
+              PaddedContainer(
+                contents: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            DTitleWidget(
+                              title: 'Benefits',
+                            ),
+                            NotesText(
+                              text: 'Material Pick up & Deivery Available',
+                            )
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.chat,
+                        color: kYellow,
+                        size: 30,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const DashDivider(),
+              const PaddedContainer(
+                contents: [
+                  DTitleWidget(
+                    title: 'Description',
+                  ),
+                  NotesText(
+                    text: loremIpsum,
+                  ),
+                ],
+              ),
+              const DashDivider(),
+              PaddedContainer(
+                contents: [
+                  const DTitleWidget(
+                    title: 'Rating & Comments',
+                  ),
+                  Row(
+                    children: const [
+                      Expanded(
+                        flex: 4,
+                        child: StarContainer(),
+                      ),
+                      Expanded(
+                          child: HighlightRating(
+                        count: 54,
+                        percentage: 4.3,
+                      ))
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        CustomButton(),
+                        Text(
+                          'Reviews(12)',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 19),
+                        )
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: const [
+                      CustomListTile(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: NotesText(
+                          text: loremIpsum,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
           ),
         ],
       ),
@@ -227,23 +226,26 @@ class StackDisplay extends StatelessWidget {
                 icon: Icons.location_on_outlined,
                 text: 'Johnson Road, T.Nagar',
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: kWhite),
+                    fontWeight: FontWeight.w500, fontSize: 14, color: kWhite),
               ),
             ],
           )),
-          DottedBorder(
-            color: kWhite,
-            child: IconButton(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite_border,
-                color: kWhite,
+          Consumer<ScreenTwoProvider>(builder: (context, newValue, child) {
+            return DottedBorder(
+              color: kWhite,
+              child: IconButton(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                onPressed: () {
+                  Provider.of<ScreenTwoProvider>(context, listen: false)
+                      .changeFav();
+                },
+                icon: Icon(
+                  newValue.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: kWhite,
+                ),
               ),
-            ),
-          ),
+            );
+          }),
           IconButton(
             onPressed: () {},
             icon: const Icon(
@@ -409,7 +411,7 @@ class PaddedContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8, bottom: 12),
+      padding: const EdgeInsets.only(left: 20.0, right: 20, top: 8, bottom: 12),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start, children: contents),
     );
@@ -498,7 +500,7 @@ class InsideStackText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12.0, bottom: 5),
+      padding: const EdgeInsets.only(left: kPadding12, bottom: 3, top: 4),
       child: Row(
         children: [
           Icon(

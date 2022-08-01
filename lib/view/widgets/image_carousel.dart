@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mech_test_prologics/view/config/app_colors.dart';
 import 'package:mech_test_prologics/view/config/sizes.dart';
+import 'package:mech_test_prologics/view/config/strings.dart';
 
 PageController _pageController =
     PageController(viewportFraction: 1, initialPage: 1);
@@ -32,8 +33,8 @@ class ImageCarousel extends StatelessWidget {
               // margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(
-                        scale: 1,
+                      image: AssetImage(
+                        // scale: 1,
                         images[pagePosition],
                       ),
                       fit: BoxFit.cover)),
@@ -43,10 +44,11 @@ class ImageCarousel extends StatelessWidget {
     );
   }
 }
-List<Widget> indicators(imagesLength,currentIndex) {
+
+List<Widget> indicators(imagesLength, currentIndex) {
   return List<Widget>.generate(imagesLength, (index) {
     return Container(
-      margin: EdgeInsets.all(3),
+      margin: const EdgeInsets.all(3),
       width: 10,
       height: 10,
       decoration: BoxDecoration(
@@ -55,8 +57,3 @@ List<Widget> indicators(imagesLength,currentIndex) {
     );
   });
 }
-
-List<String> images = [
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTIZccfNPnqalhrWev-Xo7uBhkor57_rKbkw&usqp=CAU",
-  "https://wallpaperaccess.com/full/2637581.jpg"
-];

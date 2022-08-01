@@ -1,13 +1,13 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:mech_test_prologics/provider/config_provider.dart';
 import 'package:mech_test_prologics/view/config/app_colors.dart';
 import 'package:mech_test_prologics/view/config/sizes.dart';
 import 'package:mech_test_prologics/view/config/strings.dart';
 import 'package:mech_test_prologics/view/config/styles.dart';
 import 'package:mech_test_prologics/view/widgets/custom_appbar.dart';
 import 'package:mech_test_prologics/view/widgets/d_icon_button.dart';
+import 'package:provider/provider.dart';
 
 class ScreenOne extends StatelessWidget {
   const ScreenOne({Key? key}) : super(key: key);
@@ -17,7 +17,10 @@ class ScreenOne extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: const PreferredSize(
-            preferredSize: Size(double.infinity, 70), child: CustomAppBar()),
+            preferredSize: Size(double.infinity, 70),
+            child: CustomAppBar(
+              title: "ORD12313",
+            )),
         body: Center(
           child: ListView(
             padding: const EdgeInsets.only(top: 8, left: 12, right: 12),
@@ -49,6 +52,7 @@ class ScreenOne extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 contents: [
                   ORDProfileInfo(
+                    imgUrl: profileImg,
                     name: 'Vijay',
                     number: "XXXXXXXXXX",
                   ),
@@ -58,21 +62,21 @@ class ScreenOne extends StatelessWidget {
               Stack(
                 children: [
                   ORDCustomContainer(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: kPadding12),
                     contents: [
                       SizedBox(
                         height: dHeight(context) / 12,
-                        child: Row(children: [
-                          const Expanded(
+                        child: Row(children: const [
+                          Expanded(
                               child: ORDTimeShow(
                             title: 'Pick Up Date',
                             body: "12 - 04 - 2022",
                           )),
-                          const VerticalDivider(
+                          VerticalDivider(
                             thickness: 2,
                             width: 2,
                           ),
-                          const Expanded(
+                          Expanded(
                               child: ORDTimeShow(
                             title: 'Pick Up Time',
                             body: "10:30 AM",
@@ -83,10 +87,13 @@ class ScreenOne extends StatelessWidget {
                   ),
                   Positioned(
                     top: 10,
-                    right: 10,
+                    right: 0,
                     child: IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.edit_calendar)),
+                        icon: const Icon(
+                          Icons.edit_calendar,
+                          color: kBlue,
+                        )),
                   )
                 ],
               ),
@@ -104,56 +111,68 @@ class ScreenOne extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
+                                children: const [
+                                  Text(
                                     'Appointment Date',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  const Text('12-04-2022 | 12:25am to 12:30pm')
+                                  Text('12-04-2022 | 12:25am to 12:30pm')
                                 ],
                               )
                             ],
                           ),
                         ),
-                        Expanded(
-                            child: Row(
-                          children: const [
-                            Icon(Icons.done),
-                            Icon(Icons.calendar_month)
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.cloud_done_rounded,
+                              color: kGreen,
+                            ),
+                            width10,
+                            const Icon(
+                              Icons.calendar_month,
+                              color: kRed,
+                            )
                           ],
-                        ))
+                        )
                       ],
                     ),
                   )
                 ],
               ),
-              const ORDProductImg(),
+              Consumer<ConfigProvider>(builder: (context, newValue, chhild) {
+                return ORDProductImg(
+                  isVisible: newValue.isImgVisible,
+                  onTap: () =>
+                      Provider.of<ConfigProvider>(context, listen: false)
+                          .imgVisibility(),
+                );
+              }),
               const ORDCustomContainer(contents: [
-                ORDTitle(
-                  text: 'Addon Service',
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: ORDTitle(
+                    text: 'Addon Service',
+                  ),
                 ),
-                Text(
-                  "Lining Quality Washed | Lining Quality Washed",
-                  style: TextStyles.bodyGray,
+                AddonText(
+                  text: "Lining Quality Washed | Lining Quality Washed",
                 ),
-                Text(
-                  "Lining Quality Washed | Lining Quality Washed",
-                  style: TextStyles.bodyGray,
-                ),
+                AddonText(
+                  text: "Lining Quality Washed | Lining Quality Washed",
+                )
               ]),
               ORDCustomContainer(
                 contents: [
-                  const ORDTitle(
-                    text: 'Customer Tailor Notes',
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: kPadding8),
+                    child: ORDTitle(
+                      text: 'Customer Tailor Notes',
+                    ),
                   ),
-                  const Text(
-                    loremIpsum,
-                    style: TextStyle(
-                        height: 1.3,
-                        color: kGrey,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13),
+                  const NotesText(
+                    text: loremIpsum,
                   ),
                   const Divider(),
                   Row(
@@ -164,33 +183,41 @@ class ScreenOne extends StatelessWidget {
                           text: 'Customer Tailor Notes',
                         ),
                       ),
-                      Expanded(
-                          child: Row(
+                      Row(
                         children: [
                           IconButton(
                               padding: EdgeInsets.zero,
                               onPressed: () {},
-                              icon: const Icon(Icons.share)),
+                              icon: const Icon(
+                                Icons.share,
+                                color: kBlue,
+                              )),
                           IconButton(
                               padding: EdgeInsets.zero,
                               onPressed: () {},
-                              icon: const Icon(Icons.edit))
+                              icon: const Icon(
+                                Icons.edit,
+                                color: kBlue,
+                              ))
                         ],
-                      ))
+                      )
                     ],
                   ),
-                  const Text(
-                    loremIpsum,
-                    style: TextStyle(
-                        height: 1.3,
-                        color: kGrey,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13),
+                  const NotesText(
+                    text: loremIpsum,
                   )
                 ],
               ),
               const DottedText(text: 'Vendor Notes for Tailor'),
-              const ORDProductImg(productNum: 'Product 2'),
+              Consumer<ConfigProvider>(builder: (context, newValue, child) {
+                return ORDProductImg(
+                  isVisible: newValue.isImgVisible2,
+                  productNum: 'Product 2',
+                  onTap: () =>
+                      Provider.of<ConfigProvider>(context, listen: false)
+                          .imgVisibility2(),
+                );
+              }),
               ORDCustomContainer(
                 contents: [
                   const ORDTitle(
@@ -205,7 +232,7 @@ class ScreenOne extends StatelessWidget {
                     value: '00.00',
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 4),
+                    padding: EdgeInsets.only(top: kPadding4),
                     child: Text(
                       'Price: 650 | Text: 18% | Tax Amt: 55',
                       style: TextStyle(
@@ -237,8 +264,11 @@ class ScreenOne extends StatelessWidget {
               ),
               const ORDCustomContainer(
                 contents: [
-                  ORDTitle(
-                    text: 'Payment Mode',
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: kPadding8),
+                    child: ORDTitle(
+                      text: 'Payment Mode',
+                    ),
                   ),
                   Text(
                     'Cash on Delivery',
@@ -250,6 +280,36 @@ class ScreenOne extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+///////////////////////////////////////////////////////////
+
+class NotesText extends StatelessWidget {
+  const NotesText({Key? key, this.text = ''}) : super(key: key);
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+          height: 1.3,
+          color: kTextGrey,
+          fontWeight: FontWeight.w500,
+          fontSize: 13),
+    );
+  }
+}
+
+class AddonText extends StatelessWidget {
+  const AddonText({Key? key, this.text = ''}) : super(key: key);
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyles.bodyGray
+          .copyWith(fontWeight: FontWeight.w500, fontSize: 12),
     );
   }
 }
@@ -323,51 +383,67 @@ class ORDProductImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ORDCustomContainer(
+      padding: EdgeInsets.zero,
       contents: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ORDTitle(
-              text: productNum,
-            ),
-            DIconButton(
-              bg: kYellow,
-              icon: Icons.arrow_upward,
-              onTap: onTap,
-              size: 14,
-            )
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: kPadding12, horizontal: kPadding12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ORDTitle(
+                text: productNum,
+              ),
+              DIconButton(
+                bg: kYellow,
+                icon: isVisible
+                    ? Icons.keyboard_arrow_up_rounded
+                    : Icons.keyboard_arrow_down_rounded,
+                onTap: onTap,
+                size: 14,
+              )
+            ],
+          ),
         ),
         Visibility(
           visible: isVisible,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Divider(),
-              const Text(
-                'Material Image',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              const Divider(
+                thickness: 2.1,
+                color: kSecondary,
               ),
-              LimitedBox(
-                maxHeight: dHeight(context) / 8,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 10,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: kPadding12),
+                child: Text(
+                  'Material Image',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kPadding12),
+                child: LimitedBox(
+                  maxHeight: dHeight(context) / 8,
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(
+                      width: 10,
+                    ),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 2,
+                    itemBuilder: (BuildContext context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        width: dWidth(context) / 4.2,
+                        // height: dHeight(context)/20,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: const DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(imgPlaceholder))),
+                      );
+                    },
                   ),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 2,
-                  itemBuilder: (BuildContext context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      width: dWidth(context) / 4.2,
-                      // height: dHeight(context)/20,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(imgPlaceholder))),
-                    );
-                  },
                 ),
               )
             ],
@@ -437,14 +513,17 @@ class ORDAddressContainer extends StatelessWidget {
 }
 
 class ORDProfileInfo extends StatelessWidget {
-  const ORDProfileInfo({Key? key, this.name = '', this.number = ''})
+  const ORDProfileInfo(
+      {Key? key, this.name = '', this.number = '', this.imgUrl = ''})
       : super(key: key);
   final String name;
   final String number;
+  final String imgUrl;
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const CircleAvatar(
+      leading: CircleAvatar(
+        backgroundImage: AssetImage(imgUrl),
         radius: 24,
       ),
       title: Text(

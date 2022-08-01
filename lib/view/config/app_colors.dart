@@ -11,3 +11,4 @@ const kYellow = Color(0xffffa400);
 const kBlue = Color(0xff00aafe);
 const kGreen = Color(0xff00f51e);
 const kRed = Color(0xffff0050);
+const kTextGrey = Color.fromARGB(255, 129, 129, 129);

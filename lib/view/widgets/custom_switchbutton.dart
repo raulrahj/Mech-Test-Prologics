@@ -28,6 +28,7 @@ class _SwitchControlState extends State<SwitchControl> {
       builder: (context, value, child) => InkWell(
         splashColor: Colors.transparent,
         child: AnimatedContainer(
+          key: UniqueKey(),
           duration: const Duration(milliseconds: 300),
           curve: Curves.decelerate,
           width: 55,
@@ -63,6 +64,7 @@ class _SwitchControlState extends State<SwitchControl> {
         ),
         onTap: () {
           // widget.isValueChange = !widget.isValueChange;
+          // widget.isValueChange =!widget.isValueChange;
           Provider.of<ConfigProvider>(context, listen: false)
               .switchToggle(widget.isValueChange);
               widget.onChanged(widget.isValueChange);
